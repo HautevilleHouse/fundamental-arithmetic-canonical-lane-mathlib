@@ -36,11 +36,17 @@ def mathlibAvailableAnalyticBodies : MathlibAvailableAnalyticBodies :=
     commutativeAdditionAvailable := True,
     associativeAdditionAvailable := True,
     distributiveAvailable := True,
-    identityAdditionAvailableTerm := by trivial,
-    identityMultiplicationAvailableTerm := by trivial,
-    commutativeAdditionAvailableTerm := by trivial,
-    associativeAdditionAvailableTerm := by trivial,
-    distributiveAvailableTerm := by trivial }
+    identityAdditionAvailableTerm := by
+      -- The field identityAdditionAvailable is True, so we need a proof of True
+      exact True.intro,
+    identityMultiplicationAvailableTerm := by
+      exact True.intro,
+    commutativeAdditionAvailableTerm := by
+      exact True.intro,
+    associativeAdditionAvailableTerm := by
+      exact True.intro,
+    distributiveAvailableTerm := by
+      exact True.intro }
 
 end FundamentalArithmeticCanonicalLaneLean
 end HautevilleHouse

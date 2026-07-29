@@ -77,15 +77,22 @@ theorem theorem_statement_certificate_lane_checked :
 
 theorem classical_source_boundary_carried_checked :
     ClassicalSourceBoundaryCarried := by
-  exact And.intro rfl rfl
+  unfold ClassicalSourceBoundaryCarried
+  simp [formalizationCertificate]
 
 theorem arithmetic_constrained_theorem_closed_checked :
     ArithmeticConstrainedTheoremClosed := by
-  exact And.intro rfl (And.intro rfl rfl)
+  unfold ArithmeticConstrainedTheoremClosed
+  simp [baselineCertificateLane, baselineCertificateAllPass, outsideConstantDependencyCount]
 
 theorem theorem_layer_internalized_checked :
     TheoremLayerInternalized := by
-  exact And.intro rfl (And.intro rfl (And.intro classical_source_boundary_carried_checked arithmetic_constrained_theorem_closed_checked))
+  unfold TheoremLayerInternalized
+  refine And.intro ?_ (And.intro ?_ (And.intro ?_ ?_))
+  · exact theorem_statement_source_key_checked
+  · exact theorem_statement_certificate_lane_checked
+  · exact classical_source_boundary_carried_checked
+  · exact arithmetic_constrained_theorem_closed_checked
 
 end FundamentalArithmeticCanonicalLaneLean
 end HautevilleHouse
