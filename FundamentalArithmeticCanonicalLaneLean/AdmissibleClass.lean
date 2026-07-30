@@ -1,4 +1,4 @@
-import FundamentalArithmeticCanonicalLaneLean.MathlibObjects
+import canonicalLaneMathlib.AdmissibleClass
 
 namespace HautevilleHouse
 namespace FundamentalArithmeticCanonicalLaneLean

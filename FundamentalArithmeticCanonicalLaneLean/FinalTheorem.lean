@@ -1,4 +1,6 @@
-import HautevilleHouse.FundamentalArithmeticCanonicalLaneLean.GateLemmas
+import canonicalLaneMathlib.AdmissibleClass
+import FundamentalArithmeticCanonicalLaneLean.BridgeLemmas
+import FundamentalArithmeticCanonicalLaneLean.GateLemmas
 
 namespace HautevilleHouse
 namespace FundamentalArithmeticCanonicalLaneLean
