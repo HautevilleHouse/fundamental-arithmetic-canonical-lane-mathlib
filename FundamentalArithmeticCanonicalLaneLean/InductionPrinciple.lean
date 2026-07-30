@@ -1,25 +1,31 @@
-import canonicalLaneMathlib.AdmissibleClass
+import HautevilleHouse.FundamentalArithmeticCanonicalLaneLean.PeanoAxiomsPackage
 
 namespace HautevilleHouse
 namespace FundamentalArithmeticCanonicalLaneLean
 
--- | A package capturing the (strong) induction principle for ℕ.
-structure InductionPackage (A : PeanoAxiomsPackage) where
-  strongInduction : ∀ (P : ℕ → Prop), (∀ n, (∀ m, m < n → P m) → P n) → ∀ n, P n
-  inductiveProof : ∀ (P : ℕ → Prop), P 0 → (∀ n, P n → P (A.succ n)) → ∀ n, P n
+structure InductionPrinciplePackage {N : NaturalNumber} (P : PeanoAxiomsPackage N) where
+  baseCase : Prop
+  stepCase : Prop
+  conclusion : Prop
+  baseCaseTerm : baseCase
+  stepCaseTerm : stepCase
+  conclusionTerm : conclusion
 
--- | Evidence that induction holds.
-structure InductionEvidence {A : PeanoAxiomsPackage} (I : InductionPackage A) where
-  strongInductionClosed : I.strongInduction
-  inductiveProofClosed : I.inductiveProof
+structure InductionPrincipleEvidence {N : NaturalNumber} {P : PeanoAxiomsPackage N}
+    (I : InductionPrinciplePackage P) where
+  baseCaseClosed : I.baseCase
+  stepCaseClosed : I.stepCase
+  conclusionClosed : I.conclusion
 
--- | Closure condition for induction.
-def InductionClosed {A : PeanoAxiomsPackage} (I : InductionPackage A) : Prop :=
-  I.strongInduction ∧ I.inductiveProof
+def InductionPrincipleClosed {N : NaturalNumber} {P : PeanoAxiomsPackage N}
+    (I : InductionPrinciplePackage P) : Prop :=
+  I.baseCase ∧ I.stepCase ∧ I.conclusion
 
-theorem induction_closed_from_evidence {A : PeanoAxiomsPackage}
-    (I : InductionPackage A) (E : InductionEvidence I) : InductionClosed I := by
-  exact And.intro E.strongInductionClosed E.inductiveProofClosed
+theorem induction_principle_closed_from_evidence
+    {N : NaturalNumber} {P : PeanoAxiomsPackage N}
+    (I : InductionPrinciplePackage P) (E : InductionPrincipleEvidence I) :
+    InductionPrincipleClosed I := by
+  exact And.intro E.baseCaseClosed (And.intro E.stepCaseClosed E.conclusionClosed)
 
 end FundamentalArithmeticCanonicalLaneLean
 end HautevilleHouse

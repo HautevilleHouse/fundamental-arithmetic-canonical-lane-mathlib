@@ -1,4 +1,4 @@
-import FundamentalArithmeticCanonicalLaneLean.BridgeLemmas
+import HautevilleHouse.FundamentalArithmeticCanonicalLaneLean.ArithmeticBridgeLemmas
 
 namespace HautevilleHouse
 namespace FundamentalArithmeticCanonicalLaneLean

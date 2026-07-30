@@ -1,13 +1,13 @@
-import FundamentalArithmeticCanonicalLaneLean.GateLemmas
+import HautevilleHouse.FundamentalArithmeticCanonicalLaneLean.GateLemmas
 
 namespace HautevilleHouse
 namespace FundamentalArithmeticCanonicalLaneLean
 
-def ConstrainedFundamentalArithmeticClosure (A : AdmissibleClass) : Prop :=
+def ConstrainedArithmeticClosure (A : AdmissibleClass) : Prop :=
   bridgeClosed A ∧ gateClosed A
 
-theorem constrained_fundamental_arithmetic_endgame (A : AdmissibleClass) :
-    ConstrainedFundamentalArithmeticClosure A := by
+theorem constrained_arithmetic_endgame (A : AdmissibleClass) :
+    ConstrainedArithmeticClosure A := by
   exact And.intro (bridge_from_admissible_class A) (gate_from_admissible_class A)
 
 end FundamentalArithmeticCanonicalLaneLean
