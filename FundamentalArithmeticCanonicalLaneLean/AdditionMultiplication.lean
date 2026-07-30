@@ -1,33 +1,39 @@
 import canonicalLaneMathlib.AdmissibleClass
-import FundamentalArithmeticCanonicalLaneLean.PeanoAxioms
 
 namespace HautevilleHouse
 namespace FundamentalArithmeticCanonicalLaneLean
 
-structure AdditionMultiplicationPackage {P : PeanoAxiomsPackage} (HP : PeanoAxiomsEvidence P) where
-  addDefined : Prop
-  mulDefined : Prop
-  addAssoc : Prop
-  addComm : Prop
-  mulAssoc : Prop
-  mulComm : Prop
-  distrib : Prop
+structure AdditionMultiplicationPackage where
+  additionDefined : Prop
+  multiplicationDefined : Prop
+  commutativeAddition : Prop
+  associativeAddition : Prop
+  commutativeMultiplication : Prop
+  associativeMultiplication : Prop
+  distributiveLaw : Prop
+  additionDefinedTerm : additionDefined
+  multiplicationDefinedTerm : multiplicationDefined
+  commutativeAdditionTerm : commutativeAddition
+  associativeAdditionTerm : associativeAddition
+  commutativeMultiplicationTerm : commutativeMultiplication
+  associativeMultiplicationTerm : associativeMultiplication
+  distributiveLawTerm : distributiveLaw
 
-def AdditionMultiplicationClosed {P : PeanoAxiomsPackage} {HP : PeanoAxiomsEvidence P} (AM : AdditionMultiplicationPackage HP) : Prop :=
-  AM.addDefined ∧ AM.mulDefined ∧ AM.addAssoc ∧ AM.addComm ∧ AM.mulAssoc ∧ AM.mulComm ∧ AM.distrib
+structure AdditionMultiplicationEvidence (P : AdditionMultiplicationPackage) where
+  additionDefinedClosed : P.additionDefined
+  multiplicationDefinedClosed : P.multiplicationDefined
+  commutativeAdditionClosed : P.commutativeAddition
+  associativeAdditionClosed : P.associativeAddition
+  commutativeMultiplicationClosed : P.commutativeMultiplication
+  associativeMultiplicationClosed : P.associativeMultiplication
+  distributiveLawClosed : P.distributiveLaw
 
-structure AdditionMultiplicationEvidence {P : PeanoAxiomsPackage} {HP : PeanoAxiomsEvidence P} (AM : AdditionMultiplicationPackage HP) where
-  addDefinedClosed : AM.addDefined
-  mulDefinedClosed : AM.mulDefined
-  addAssocClosed : AM.addAssoc
-  addCommClosed : AM.addComm
-  mulAssocClosed : AM.mulAssoc
-  mulCommClosed : AM.mulComm
-  distribClosed : AM.distrib
+set_option pp.universes true
+def AdditionMultiplicationClosed (P : AdditionMultiplicationPackage) : Prop :=
+  P.additionDefined ∧ P.multiplicationDefined ∧ P.commutativeAddition ∧ P.associativeAddition ∧ P.commutativeMultiplication ∧ P.associativeMultiplication ∧ P.distributiveLaw
 
-theorem addition_multiplication_closed_from_evidence {P : PeanoAxiomsPackage} {HP : PeanoAxiomsEvidence P} (AM : AdditionMultiplicationPackage HP) (E : AdditionMultiplicationEvidence AM) :
-    AdditionMultiplicationClosed AM := by
-  exact And.intro E.addDefinedClosed (And.intro E.mulDefinedClosed (And.intro E.addAssocClosed (And.intro E.addCommClosed (And.intro E.mulAssocClosed (And.intro E.mulCommClosed E.distribClosed)))))
+theorem addition_multiplication_closed_from_evidence (P : AdditionMultiplicationPackage) (E : AdditionMultiplicationEvidence P) : AdditionMultiplicationClosed P :=
+  And.intro E.additionDefinedClosed (And.intro E.multiplicationDefinedClosed (And.intro E.commutativeAdditionClosed (And.intro E.associativeAdditionClosed (And.intro E.commutativeMultiplicationClosed (And.intro E.associativeMultiplicationClosed E.distributiveLawClosed)))))
 
 end FundamentalArithmeticCanonicalLaneLean
 end HautevilleHouse
