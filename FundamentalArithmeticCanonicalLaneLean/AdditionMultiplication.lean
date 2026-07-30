@@ -1,39 +1,34 @@
 import canonicalLaneMathlib.AdmissibleClass
+import HautevilleHouse.FundamentalArithmeticCanonicalLaneLean.PeanoAxioms
 
 namespace HautevilleHouse
 namespace FundamentalArithmeticCanonicalLaneLean
 
-structure AdditionMultiplicationPackage where
-  additionDefined : Prop
-  multiplicationDefined : Prop
-  commutativeAddition : Prop
-  associativeAddition : Prop
-  commutativeMultiplication : Prop
-  associativeMultiplication : Prop
-  distributiveLaw : Prop
-  additionDefinedTerm : additionDefined
-  multiplicationDefinedTerm : multiplicationDefined
-  commutativeAdditionTerm : commutativeAddition
-  associativeAdditionTerm : associativeAddition
-  commutativeMultiplicationTerm : commutativeMultiplication
-  associativeMultiplicationTerm : associativeMultiplication
-  distributiveLawTerm : distributiveLaw
+structure AdditionPackage {P : PeanoAxiomsPackage} (H : PeanoAxiomsEvidence P) where
+  addFunction : P.zeroElement → P.zeroElement → P.zeroElement
+  addZero : ∀ a : P.zeroElement, addFunction a P.zeroElement = a
+  addSucc : ∀ a b : P.zeroElement, addFunction a (P.successorFunction b) = P.successorFunction (addFunction a b)
 
-structure AdditionMultiplicationEvidence (P : AdditionMultiplicationPackage) where
-  additionDefinedClosed : P.additionDefined
-  multiplicationDefinedClosed : P.multiplicationDefined
-  commutativeAdditionClosed : P.commutativeAddition
-  associativeAdditionClosed : P.associativeAddition
-  commutativeMultiplicationClosed : P.commutativeMultiplication
-  associativeMultiplicationClosed : P.associativeMultiplication
-  distributiveLawClosed : P.distributiveLaw
+structure MultiplicationPackage {P : PeanoAxiomsPackage} {H : PeanoAxiomsEvidence P} (A : AdditionPackage H) where
+  mulFunction : P.zeroElement → P.zeroElement → P.zeroElement
+  mulZero : ∀ a : P.zeroElement, mulFunction a P.zeroElement = P.zeroElement
+  mulSucc : ∀ a b : P.zeroElement, mulFunction a (P.successorFunction b) = A.addFunction (mulFunction a b) a
 
-set_option pp.universes true
-def AdditionMultiplicationClosed (P : AdditionMultiplicationPackage) : Prop :=
-  P.additionDefined ∧ P.multiplicationDefined ∧ P.commutativeAddition ∧ P.associativeAddition ∧ P.commutativeMultiplication ∧ P.associativeMultiplication ∧ P.distributiveLaw
+structure ArithmeticEvidence {P : PeanoAxiomsPackage} {H : PeanoAxiomsEvidence P} (A : AdditionPackage H) (M : MultiplicationPackage A) where
+  addZeroClosed : ∀ a : P.zeroElement, A.addFunction a P.zeroElement = a
+  addSuccClosed : ∀ a b : P.zeroElement, A.addFunction a (P.successorFunction b) = P.successorFunction (A.addFunction a b)
+  mulZeroClosed : ∀ a : P.zeroElement, M.mulFunction a P.zeroElement = P.zeroElement
+  mulSuccClosed : ∀ a b : P.zeroElement, M.mulFunction a (P.successorFunction b) = A.addFunction (M.mulFunction a b) a
 
-theorem addition_multiplication_closed_from_evidence (P : AdditionMultiplicationPackage) (E : AdditionMultiplicationEvidence P) : AdditionMultiplicationClosed P :=
-  And.intro E.additionDefinedClosed (And.intro E.multiplicationDefinedClosed (And.intro E.commutativeAdditionClosed (And.intro E.associativeAdditionClosed (And.intro E.commutativeMultiplicationClosed (And.intro E.associativeMultiplicationClosed E.distributiveLawClosed)))))
+def ArithmeticClosed {P : PeanoAxiomsPackage} {H : PeanoAxiomsEvidence P} (A : AdditionPackage H) (M : MultiplicationPackage A) : Prop :=
+  (∀ a : P.zeroElement, A.addFunction a P.zeroElement = a) ∧
+  (∀ a b : P.zeroElement, A.addFunction a (P.successorFunction b) = P.successorFunction (A.addFunction a b)) ∧
+  (∀ a : P.zeroElement, M.mulFunction a P.zeroElement = P.zeroElement) ∧
+  (∀ a b : P.zeroElement, M.mulFunction a (P.successorFunction b) = A.addFunction (M.mulFunction a b) a)
+
+theorem arithmetic_closed_from_evidence {P : PeanoAxiomsPackage} {H : PeanoAxiomsEvidence P} (A : AdditionPackage H) (M : MultiplicationPackage A) (E : ArithmeticEvidence A M) :
+    ArithmeticClosed A M := by
+  exact And.intro E.addZeroClosed (And.intro E.addSuccClosed (And.intro E.mulZeroClosed E.mulSuccClosed))
 
 end FundamentalArithmeticCanonicalLaneLean
 end HautevilleHouse

@@ -4,23 +4,23 @@ namespace HautevilleHouse
 namespace FundamentalArithmeticCanonicalLaneLean
 
 structure PeanoAxiomsPackage where
-  zero : Type
-  succ : Type
-  induction : Prop
-  zeroNotSucc : Prop
-  succInjective : Prop
-
-def PeanoAxiomsClosed (P : PeanoAxiomsPackage) : Prop :=
-  P.induction ∧ P.zeroNotSucc ∧ P.succInjective
+  zeroElement : Type u
+  successorFunction : zeroElement → zeroElement
+  inductionSchema : Prop
+  zeroNotSuccessor : Prop
+  successorInjective : Prop
 
 structure PeanoAxiomsEvidence (P : PeanoAxiomsPackage) where
-  inductionClosed : P.induction
-  zeroNotSuccClosed : P.zeroNotSucc
-  succInjectiveClosed : P.succInjective
+  inductionSchemaClosed : P.inductionSchema
+  zeroNotSuccessorClosed : P.zeroNotSuccessor
+  successorInjectiveClosed : P.successorInjective
+
+def PeanoAxiomsClosed (P : PeanoAxiomsPackage) : Prop :=
+  P.inductionSchema ∧ P.zeroNotSuccessor ∧ P.successorInjective
 
 theorem peano_axioms_closed_from_evidence (P : PeanoAxiomsPackage) (E : PeanoAxiomsEvidence P) :
     PeanoAxiomsClosed P := by
-  exact And.intro E.inductionClosed (And.intro E.zeroNotSuccClosed E.succInjectiveClosed)
+  exact And.intro E.inductionSchemaClosed (And.intro E.zeroNotSuccessorClosed E.successorInjectiveClosed)
 
 end FundamentalArithmeticCanonicalLaneLean
 end HautevilleHouse
